@@ -5,15 +5,17 @@
 </head>
 <body style="background-color:#ffd1b3;">
     <h1>Washing Machines </h1>
-    <img src="/static/washing machine.png" alt="Washing Machine"/>
-    <form action="/action_page.php" target="_blank" method="GET">
+    <img src="/static/washing machine.png" alt="Washing Machine" width="500" height="600"/>
+    <form>
         <fieldset>
             <legend>Available washing machines are:</legend>
             <input type="radio" name="number" value="machine1" > Washing Machine 1<br>
             <input type="radio" name="number" value="machine2" > Washing Machine 2<br>
             <input type="radio" name="number" value="machine3" > Washing Machine 3<br>
             <input type="radio" name="number" value="machine4" > Washing Machine 4<br>
-            <input type="submit" value="Submit">
+            <a href="/templates/Settings.html">
+                <button>Next</button>
+            </a>
         </fieldset>
     </form>
 </body>
