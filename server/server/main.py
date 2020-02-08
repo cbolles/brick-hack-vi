@@ -10,8 +10,7 @@ def hello_world():
     </head>
     <body style="background-color:#ffd1b3;">  
         <h1>Available Washing Machines are: </h1>
-        <img
-        >
+        
         <form action="/action_page.php" target="_blank" method="GET">
             <fieldset>
                 <legend>Here:</legend>
