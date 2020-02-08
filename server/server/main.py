@@ -5,23 +5,17 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     return """
-    <head>
-        <title>RIT Laundring Services</title>
-    </head>
-    <body style="background-color:#ffd1b3;">  
-        <h1>Available Washing Machines are: </h1>
-        
-        <form action="/action_page.php" target="_blank" method="GET">
-            <fieldset>
-                <legend>Here:</legend>
-                <input type="radio" name="number" value="machine1" > Washing Machine 1<br>
-                <input type="radio" name="number" value="machine2" > Washing Machine 2<br>
-                <input type="radio" name="number" value="machine3" > Washing Machine 3<br>
-                <input type="radio" name="number" value="machine4" > Washing Machine 4<br>
-                <input type="submit" value="Submit">
-            </fieldset>
-        </form>
-    </body>
+    <!DOCTYPE html>
+<head>
+   <title>RIT Laundry Services</title>
+</head>
+<body style="background-color:#ffd1b3;">
+<body>  
+    <h1>Welcome to RIT's Laundry Services</h1>
+    <h2>No washing Machines are available at this time.</h2>
+    <p>The next available washing machine will finish it's cycle in: 06:23 minutes</p>
+    <img src="/static/washing machine.png" alt="Washing Machine"/>
+    
     """
 
 
