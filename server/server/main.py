@@ -1,6 +1,22 @@
 from flask import Flask, request, Response, render_template
+import paho.mqtt.client as mqtt
+from pathlib import Path
+import os
+from configparser import ConfigParser
 
 app = Flask(__name__)
+
+
+# Get configuration
+current_dir = Path(os.path.abspath(os.path.dirname(__file__)))
+settings_location = current_dir / '..' / 'config' / 'settings.ini'
+config = ConfigParser()
+config.read(settings_location)
+
+# Setup MQTT
+client = mqtt.Client()
+client.connect(config['mqtt']['host'], int(config['mqtt']['port']), 60)
+client.loop_start()
 
 
 @app.route('/')
@@ -33,6 +49,20 @@ def handle_washer_interaction():
     time_remaining = data['time_remaining']
     print('Washer: {}, By, {}, In state: {}, With {} remaining', washer_id, user_id, washer_status,
           time_remaining)
+    return Response(status=200)
+
+
+@app.route('/washer/run_command')
+def washer_run_command():
+    """
+    Handle user making selections on what the washer should run. Expected in the format
+    {
+ 
+    }
+    """
+    print('here')
+    print(client)
+    client.publish('washer/8/run_cycle', 'temp data')
     return Response(status=200)
 
 
