@@ -6,7 +6,6 @@ from configparser import ConfigParser
 
 app = Flask(__name__)
 
-
 # Get configuration
 current_dir = Path(os.path.abspath(os.path.dirname(__file__)))
 settings_location = current_dir / '..' / 'config' / 'settings.ini'
@@ -20,25 +19,28 @@ client.loop_start()
 
 
 @app.route('/')
+def hello_earth():
+    return render_template('MainPage.html')
+
+
+@app.route('/WMaskStudent')
 def hello_world():
-    return render_template('WMAskStudent.html')
+    return render_template('WMaskStudent.html')
 
 
-@app.route('/Settings.html')
+@app.route('/WMaskStudent/Settings.html')
 def hello_universe():
     return render_template('Settings.html')
 
 
-@app.route('/Settings/Timer.html')
+@app.route('/WMaskStudent/Settings/Timer.html')
 def hello_galaxy():
     return render_template('Timer.html')
 
 
-@app.route('/Settings/Timer/NotificationWasher.html')
+@app.route('/WMaskStudent/Settings/Timer/NotificationWasher.html')
 def hello_milky_way():
     return render_template('NotificationWasher.html')
-
-
 
 
 @app.route('/washer/user_interaction', methods=['POST'])
@@ -69,7 +71,7 @@ def washer_run_command():
     """
     Handle user making selections on what the washer should run. Expected in the format
     {
- 
+
     }
     """
     print('here')
