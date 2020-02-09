@@ -8,9 +8,21 @@ def hello_world():
     return render_template('WMAskStudent.html')
 
 
-@app.route('/Settings')
+@app.route('/Settings.html')
 def hello_universe():
     return render_template('Settings.html')
+
+
+@app.route('/Settings/Timer.html')
+def hello_galaxy():
+    return render_template('Timer.html')
+
+
+@app.route('/Settings/Timer/NotificationWasher.html')
+def hello_milky_way():
+    return render_template('NotificationWasher.html')
+
+
 
 
 @app.route('/washer/user_interaction', methods=['POST'])
