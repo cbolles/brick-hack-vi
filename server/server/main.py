@@ -27,8 +27,6 @@ def hello_milky_way():
     return render_template('NotificationWasher.html')
 
 
-
-
 @app.route('/washer/user_interaction', methods=['POST'])
 def handle_washer_interaction():
     """
