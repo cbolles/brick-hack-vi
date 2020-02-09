@@ -33,7 +33,7 @@ class Washer:
 
 class WasherDatabase:
     def __init__(self, mqtt_client):
-        self.washers = [Washer(id, mqtt_client) for id in range(1, 11)]
+        self.washers = [Washer(id, mqtt_client) for id in range(1, 3)]
 
     def get_available_washers(self):
         return [washer for washer in self.washers if washer.washer_status == WasherStatus.AVAILABLE]

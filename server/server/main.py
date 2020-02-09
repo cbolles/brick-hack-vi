@@ -30,6 +30,9 @@ def hello_earth():
 
 @app.route('/WMaskStudent')
 def hello_world():
+    available_washers = washer_db.get_available_washers()
+    if len(available_washers) == 0:
+        return render_template('WMUnavailable.html')
     return render_template('WMaskStudent.html', available_washers=washer_db.get_available_washers())
 
 
