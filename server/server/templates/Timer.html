@@ -6,6 +6,9 @@
 </head>
 <body style="background-color:#ffd1b3;" style="font-size:large">
     <form action="/washer/washer_complete/{{ washer_id }}" +  target="_blank" method="GET">
+    
+    <h1>Time Remaining</h1>
+    <br>
     <p id="demo"></p>
 
     <script>
@@ -35,7 +38,7 @@
       if (distance < 0) {
         clearInterval(x);
         document.getElementById("demo").innerHTML = "Timer Done!";
-          setTimeout("location.href = '/washer/washer_complete/{{ washer_id }}';", 1000);
+        setTimeout("location.href = '/washer/washer_complete/{{ washer_id }}';", 1000);
 
       }
     }, 1000);

@@ -80,7 +80,8 @@ def washer_complete(washer_id):
     washer = washer_db.get_by_id(int(washer_id))
     washer.cycle_complete()
 
-    return render_template('NotificationWasher.html', washer_id=washer_id)
+    finish_time = int(round(time.time() * 1000)) + 30000
+    return render_template('NotificationWasher.html', washer_id=washer_id, finish_time=finish_time)
 
 
 @app.route('/washer/unlock/<washer_id>')
