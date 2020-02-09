@@ -3,9 +3,9 @@ import paho.mqtt.client as mqtt
 from pathlib import Path
 import os
 from configparser import ConfigParser
-import json
 import time
 from database import WasherDatabase
+import threading
 
 app = Flask(__name__)
 
@@ -95,5 +95,11 @@ def washer_unlock(washer_id):
     return render_template('MainPage.html')
 
 
+def support_thread():
+    threading.Timer(3.0, support_thread).start()
+    washer_db.check_timeouts()
+
+
 if __name__ == '__main__':
+    support_thread()
     app.run(host='0.0.0.0')
