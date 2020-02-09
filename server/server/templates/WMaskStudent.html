@@ -15,17 +15,15 @@
     </script>
     <h1>Washing Machines </h1>
     <img src="/static/OpenWM.png" alt="Washing Machine"/>
-    <form action="/WMaskStudent/Settings.html" target="_blank" method="GET">
+    <form action="/WMaskStudent/Settings.html" target="_blank" method="POST">
         <fieldset>
             <legend>Available washing machines are:</legend>
-            <input type="radio" name="number" value="machine1" onclick="javascript:enableLink();"> Washing Machine 1<br>
-            <input type="radio" name="number" value="machine2" onclick="javascript:enableLink();"> Washing Machine 2<br>
-            <input type="radio" name="number" value="machine3" onclick="javascript:enableLink();"> Washing Machine 3<br>
-            <input type="radio" name="number" value="machine4" onclick="javascript:enableLink();"> Washing Machine 4<br>
+            <input type="radio" name="washer_id" value="1" onclick="javascript:enableLink();"> Washing Machine 1<br>
+            <input type="radio" name="washer_id" value="2" onclick="javascript:enableLink();"> Washing Machine 2<br>
+            <input type="radio" name="washer_id" value="3" onclick="javascript:enableLink();"> Washing Machine 3<br>
+            <input type="radio" name="washer_id" value="4" onclick="javascript:enableLink();"> Washing Machine 4<br>
         </fieldset>
+        <input type="submit">
     </form>
-    <div id="rightnav">
-        <a id="nextLink" href="javascript:displayWarning();"><button>Next</button></a>
-    </div>
 </body>
 </html>

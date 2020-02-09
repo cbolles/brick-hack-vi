@@ -9,9 +9,8 @@
 <center>
     <h1 style="font-family:verdana;">Choose Your Settings</h1>
 </center>
-<form action="/WMaskStudent/Settings/Timer.html" target="_blank" method="GET">
-<form>
-    <fieldset>
+<form action="/washer/user_interaction" target="_blank" method="POST">
+    <fieldset id="temp">
     <legend>Temperature:</legend>
         <div>
             <input type="radio" name="temp" value="cold" checked> Cold <br>
@@ -19,50 +18,43 @@
             <input type="radio" name="temp" value="hot"> Hot <br>
         </div>
     </fieldset>
-</form>
     <br>
     <br>
-<form>
-    <fieldset>
+    <fieldset id="soil_level">
     <legend>Soil Level:</legend>
         <div>
-            <input type="radio" name="temp" value="low"> Low <br>
-            <input type="radio" name="temp" value="medium" checked> Medium <br>
-            <input type="radio" name="temp" value="high"> High <br>
+            <input type="radio" name="soil_level" value="low"> Low <br>
+            <input type="radio" name="soil_level" value="medium" checked> Medium <br>
+            <input type="radio" name="soil_level" value="high"> High <br>
         </div>
     </fieldset>
-</form>
     <br>
     <br>
-<form>
-    <fieldset>
+    <fieldset id="spin_speed">
     <legend>Spin Speed:</legend>
         <div>
-        <input type="radio" name="temp" value="low"> Low <br>
-        <input type="radio" name="temp" value="medium"> Medium <br>
-        <input type="radio" name="temp" value="high" checked> High <br>
+        <input type="radio" name="spin_speed" value="low"> Low <br>
+        <input type="radio" name="spin_speed" value="medium"> Medium <br>
+        <input type="radio" name="spin_speed" value="high" checked> High <br>
         </div>
     </fieldset>
-</form>
     <br>
     <br>
-<form>
-    <fieldset>
+    <fieldset id="present_cycles">
     <legend>Present Cycles:</legend>
         <div>
-            <input type="radio" name="temp" value="heavyduty"> Heavy Duty <br>
-            <input type="radio" name="temp" value="normaleco" checked> Normal Eco <br>
-            <input type="radio" name="temp" value="delicates"> Delicate <br>
-            <input type="radio" name="temp" value="permpress"> Perm Press <br>
-            <input type="radio" name="temp" value="rinsespin"> Rinse & Spin <br>
-            <input type="radio" name="temp" value="spin"> Spin <br>
+            <input type="radio" name="present_cycle" value="heavyduty"> Heavy Duty <br>
+            <input type="radio" name="present_cycle" value="normaleco" checked> Normal Eco <br>
+            <input type="radio" name="present_cycle" value="delicates"> Delicate <br>
+            <input type="radio" name="present_cycle" value="permpress"> Perm Press <br>
+            <input type="radio" name="present_cycle" value="rinsespin"> Rinse & Spin <br>
+            <input type="radio" name="present_cycle" value="spin"> Spin <br>
         </div>
     </fieldset>
-</form>
     <br>
     <br>
-
-    <a href="/WMaskStudent/Settings/Timer.html"><button>Start</button></a>
+    <input type="submit">
+    <input type="hidden" name="washer_id" value={{ washer_id }}>
 </form>
 </body>
 </html>

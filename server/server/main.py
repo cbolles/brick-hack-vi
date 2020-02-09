@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 from pathlib import Path
 import os
 from configparser import ConfigParser
+import json
 
 app = Flask(__name__)
 
@@ -28,9 +29,10 @@ def hello_world():
     return render_template('WMaskStudent.html')
 
 
-@app.route('/WMaskStudent/Settings.html')
+@app.route('/WMaskStudent/Settings.html', methods=['POST'])
 def hello_universe():
-    return render_template('Settings.html')
+    print(request.form)
+    return render_template('Settings.html', washer_id=request.form.get('washer_id'))
 
 
 @app.route('/WMaskStudent/Settings/Timer.html')
@@ -46,24 +48,26 @@ def hello_milky_way():
 @app.route('/washer/user_interaction', methods=['POST'])
 def handle_washer_interaction():
     """
-    Handles when a user interacts with a washing machine. Updates the status of the washing machine
-    and the number of available washers. Expects information passed in like so.
+    Handles when a user selects a washing machine to use. Below are the expected values and options.
     {
         "washer_id": int,
-        "user_id": int,
-        "washer_status": int,
-        "time_remaining": long (time in seconds, -1 if not applicable)
+        "temp": (Cold, Warm, Hot),
+        "soil_level": (Low, Medium, High),
+        "spin_speed": (Low, Medium, High),
+        "present_cycle": (Heavy Duty, Normal Eco, Delicate, Perm Press, Rinse and Spin, Spin)
     }
     """
-    data = request.get_json()
-    print(data['washer_id'])
-    washer_id = data['washer_id']
-    user_id = data['user_id']
-    washer_status = data['washer_status']
-    time_remaining = data['time_remaining']
-    print('Washer: {}, By, {}, In state: {}, With {} remaining', washer_id, user_id, washer_status,
-          time_remaining)
-    return Response(status=200)
+    data = request.form
+    print(data)
+    mqtt_topic = 'washer/' + data.get('washer_id') + '/run_cycle'
+    mqtt_message = {
+        'temp': data.get('temp'),
+        'soil_level': data.get('soil_level'),
+        'spin_speed': data.get('spin_speed'),
+        'present_cycle': data.get('present_cycle')
+    }
+    client.publish(mqtt_topic, json.dumps(mqtt_message))
+    return render_template('Timer.html')
 
 
 @app.route('/washer/run_command')
@@ -74,8 +78,6 @@ def washer_run_command():
 
     }
     """
-    print('here')
-    print(client)
     client.publish('washer/8/run_cycle', 'temp data')
     return Response(status=200)
 
