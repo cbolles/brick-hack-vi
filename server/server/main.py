@@ -5,6 +5,7 @@ import os
 from configparser import ConfigParser
 import json
 import time
+from database import Washer, WasherDatabase
 
 app = Flask(__name__)
 
@@ -19,6 +20,8 @@ client = mqtt.Client()
 client.connect(config['mqtt']['host'], int(config['mqtt']['port']), 60)
 client.loop_start()
 
+washer_db = WasherDatabase()
+
 
 @app.route('/')
 def hello_earth():
@@ -27,23 +30,12 @@ def hello_earth():
 
 @app.route('/WMaskStudent')
 def hello_world():
-    return render_template('WMaskStudent.html')
+    return render_template('WMaskStudent.html', available_washers=washer_db.get_available_washers())
 
 
 @app.route('/WMaskStudent/Settings.html', methods=['POST'])
 def hello_universe():
-    print(request.form)
     return render_template('Settings.html', washer_id=request.form.get('washer_id'))
-
-
-@app.route('/WMaskStudent/Settings/Timer.html')
-def hello_galaxy():
-    return render_template('Timer.html')
-
-
-@app.route('/WMaskStudent/Settings/Timer/NotificationWasher.html')
-def hello_milky_way():
-    return render_template('NotificationWasher.html')
 
 
 @app.route('/washer/user_interaction', methods=['POST'])
@@ -69,6 +61,9 @@ def handle_washer_interaction():
     }
     client.publish(mqtt_topic, json.dumps(mqtt_message))
 
+    # Update available washer
+    washer_db.set_washer_running(int(data.get('washer_id')))
+
     # Set timer
     finish_time = int(round(time.time() * 1000)) + 15000
     return render_template('Timer.html', finish_time=finish_time, washer_id=data.get('washer_id'))
@@ -85,6 +80,9 @@ def washer_complete(washer_id):
     mqtt_topic = 'washer/' + str(washer_id) + '/end_cycle'
     mqtt_message = {}
     client.publish(mqtt_topic, json.dumps(mqtt_message))
+
+    # Update available washer
+    washer_db.set_washer_available(int(washer_id))
 
     return render_template('NotificationWasher.html')
 
