@@ -6,7 +6,7 @@
 </head>
 <body style="background-color:#ffd1b3;">
 <center>
-    <form action="/"  target="_blank" method="GET">
+    <form action="/washer/unlock/{{ washer_id }}"  target="_blank" method="GET">
         <h1> Washing machine is done!</h1>
         <br>
         <h1>Please come take your clothes out of the washing machine!</h1>
@@ -14,8 +14,7 @@
         <br>
         <br>
         <fieldset>
-
-            <a href="/"><button>Done</button></a>
+            <a href="/waher/unlock/{{ washer_id }}"><button>Unlock Door</button></a>
             <br>
         </fieldset>
     </form>

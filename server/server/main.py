@@ -5,7 +5,7 @@ import os
 from configparser import ConfigParser
 import json
 import time
-from database import Washer, WasherDatabase
+from database import WasherDatabase
 
 app = Flask(__name__)
 
@@ -20,7 +20,7 @@ client = mqtt.Client()
 client.connect(config['mqtt']['host'], int(config['mqtt']['port']), 60)
 client.loop_start()
 
-washer_db = WasherDatabase()
+washer_db = WasherDatabase(client)
 
 
 @app.route('/')
@@ -50,19 +50,19 @@ def handle_washer_interaction():
         "present_cycle": (Heavy Duty, Normal Eco, Delicate, Perm Press, Rinse and Spin, Spin)
     }
     """
-    # Make MQTT message
+    # Create cycle data
     data = request.form
-    mqtt_topic = 'washer/' + data.get('washer_id') + '/run_cycle'
-    mqtt_message = {
+    cycle_data = {
         'temp': data.get('temp'),
         'soil_level': data.get('soil_level'),
         'spin_speed': data.get('spin_speed'),
         'present_cycle': data.get('present_cycle')
     }
-    client.publish(mqtt_topic, json.dumps(mqtt_message))
 
-    # Update available washer
-    washer_db.set_washer_running(int(data.get('washer_id')))
+    # Update washer
+    washer_id = int(data.get('washer_id'))
+    washer = washer_db.get_by_id(washer_id)
+    washer.run_cycle(cycle_data)
 
     # Set timer
     finish_time = int(round(time.time() * 1000)) + 15000
@@ -76,15 +76,23 @@ def washer_complete(washer_id):
     representing how long the user has to collect their laundry before the door is automatically
     unlocked.
     """
-    # Make MQTT messsage
-    mqtt_topic = 'washer/' + str(washer_id) + '/end_cycle'
-    mqtt_message = {}
-    client.publish(mqtt_topic, json.dumps(mqtt_message))
+    # Update washer
+    washer = washer_db.get_by_id(int(washer_id))
+    washer.cycle_complete()
 
-    # Update available washer
-    washer_db.set_washer_available(int(washer_id))
+    return render_template('NotificationWasher.html', washer_id=washer_id)
 
-    return render_template('NotificationWasher.html')
+
+@app.route('/washer/unlock/<washer_id>')
+def washer_unlock(washer_id):
+    """
+    Handles when the user has unlocked the washer completing their interaction with that washer
+    """
+    # Update washer
+    washer = washer_db.get_by_id(int(washer_id))
+    washer.unlock()
+
+    return render_template('MainPage.html')
 
 
 if __name__ == '__main__':
