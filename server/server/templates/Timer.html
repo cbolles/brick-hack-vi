@@ -5,12 +5,12 @@
     <title>WasherTimer</title>
 </head>
 <body style="background-color:#ffd1b3;" style="font-size:large">
-<form action="/WMaskStudent/Settings/Timer/NotificationWasher.html" target="_blank" method="GET">
+    <form action="/washer/washer_complete/{{ washer_id }}" +  target="_blank" method="GET">
     <p id="demo"></p>
 
     <script>
     // Set the date we're counting down to
-    var countDownDate = new Date("Feb 8, 2020 19:05:25").getTime();
+        var countDownDate = new Date({{ finish_time }}).getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -35,7 +35,7 @@
       if (distance < 0) {
         clearInterval(x);
         document.getElementById("demo").innerHTML = "Timer Done!";
-        setTimeout("location.href = '/WMaskStudent/Settings/Timer/NotificationWasher.html';", 1000);
+          setTimeout("location.href = '/washer/washer_complete/{{ washer_id }}';", 1000);
 
       }
     }, 1000);

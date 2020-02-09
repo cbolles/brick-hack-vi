@@ -1,9 +1,10 @@
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, render_template
 import paho.mqtt.client as mqtt
 from pathlib import Path
 import os
 from configparser import ConfigParser
 import json
+import time
 
 app = Flask(__name__)
 
@@ -57,8 +58,8 @@ def handle_washer_interaction():
         "present_cycle": (Heavy Duty, Normal Eco, Delicate, Perm Press, Rinse and Spin, Spin)
     }
     """
+    # Make MQTT message
     data = request.form
-    print(data)
     mqtt_topic = 'washer/' + data.get('washer_id') + '/run_cycle'
     mqtt_message = {
         'temp': data.get('temp'),
@@ -67,19 +68,25 @@ def handle_washer_interaction():
         'present_cycle': data.get('present_cycle')
     }
     client.publish(mqtt_topic, json.dumps(mqtt_message))
-    return render_template('Timer.html')
+
+    # Set timer
+    finish_time = int(round(time.time() * 1000)) + 15000
+    return render_template('Timer.html', finish_time=finish_time, washer_id=data.get('washer_id'))
 
 
-@app.route('/washer/run_command')
-def washer_run_command():
+@app.route('/washer/washer_complete/<washer_id>')
+def washer_complete(washer_id):
     """
-    Handle user making selections on what the washer should run. Expected in the format
-    {
-
-    }
+    Handles when the washing cycle is complete. Allows the user to unlock the door, starts a timer
+    representing how long the user has to collect their laundry before the door is automatically
+    unlocked.
     """
-    client.publish('washer/8/run_cycle', 'temp data')
-    return Response(status=200)
+    # Make MQTT messsage
+    mqtt_topic = 'washer/' + str(washer_id) + '/end_cycle'
+    mqtt_message = {}
+    client.publish(mqtt_topic, json.dumps(mqtt_message))
+
+    return render_template('NotificationWasher.html')
 
 
 if __name__ == '__main__':
